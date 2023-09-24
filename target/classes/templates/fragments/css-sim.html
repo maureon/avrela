@@ -1,0 +1,42 @@
+<div><!-- Case study, simulation input parameters  -->
+  <div class="row"><!-- APM Case study simulation  -->
+    <div class="col"><h5>Case study</h5></div>
+    <div class="col"><h5>Simulation</h5></div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <label for="caseStudyStartDate" class="form-label"><a href="#" data-bs-toggle="tooltip" data-bs-title="Date BEFORE first Sprint due date to be imported">Start</a></label>
+      <input id="caseStudyStartDate" class="form-control" type="date" th:field="*{caseStudy.stringifyStartAt}" />
+    </div>
+    <div class="col">
+      <label for="caseStudyEndDate" class="form-label"><a href="#" data-bs-toggle="tooltip" data-bs-title="Date AFTER last Sprint due date to be imported">End</a></label>
+      <input id="caseStudyEndDate" class="form-control" type="date" th:field="*{caseStudy.stringifyEndAt}" />
+    </div>
+    <div class="col">
+      <label for="simulationStartDate" class="form-label"><a href="#" data-bs-toggle="tooltip" data-bs-title="Date BEFORE first Sprint due date to be imported">Start</a></label>
+      <input id="simulationStartDate" class="form-control" type="date" th:field="*{simulation.stringifyStartAt}" />
+    </div>
+    <div class="col">
+      <label for="simulationEndDate" class="form-label"><a href="#" data-bs-toggle="tooltip" data-bs-title="Date AFTER last Sprint due date to be imported">End</a></label>
+      <input id="simulationEndDate" class="form-control" type="date" th:field="*{simulation.stringifyEndAt}" />
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <label for="caseStudyRepositoryOwner" class="mr-sm-2">Repository owner</label>
+      <input id="caseStudyRepositoryOwner" class="form-control" th:field="*{caseStudy.repoOwner}"/>
+    </div>
+    <div class="col">
+      <label for="caseStudyRepositoryName" class="mr-sm-2">Repository name</label>
+      <input id="caseStudyRepositoryName" class="form-control" th:field="*{caseStudy.repoName}" />
+    </div>
+    <div class="col">
+      <label for="simulationRepositoryOwner" class="mr-sm-2">Repository owner</label>
+      <input id="simulationRepositoryOwner" class="form-control" th:field="*{simulation.repoOwner}" />
+    </div>
+    <div class="col">
+      <label for="simulationRepositoryName" class="mr-sm-2">Repository name</label>
+      <input id="simulationRepositoryName" class="form-control" th:field="*{simulation.repoName}" />
+    </div>
+  </div>
+</div>

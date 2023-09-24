@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>HistoricalApmData.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">avrela</a> &gt; <a href="index.source.html" class="el_package">es.ubu.lsi.avrela.apm.model</a> &gt; <span class="el_source">HistoricalApmData.java</span></div><h1>HistoricalApmData.java</h1><pre class="source lang-java linenums">package es.ubu.lsi.avrela.apm.model;
+
+
+import java.time.ZonedDateTime;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+import lombok.Builder;
+import lombok.Data;
+
+/**
+ * Historical Agile Project Management data.
+ */
+@Data
+@Builder
+public class HistoricalApmData {
+
+  private String repoOwner;
+
+  private String repoName;
+
+  private ZonedDateTime startAt;
+
+  private ZonedDateTime endAt;
+
+  /*
+   *  Sprints ordered by date desc.
+   */
+  private List&lt;Sprint&gt; sprints;
+
+  /**
+   *
+   * @return participants in time box.
+   */
+  public Set&lt;String&gt; getParticipants(){
+<span class="nc" id="L38">    Set&lt;String&gt; result = new HashSet&lt;&gt;();</span>
+<span class="nc" id="L39">    sprints.forEach(</span>
+        sprint -&gt; {
+<span class="nc" id="L41">          result.addAll(sprint.getParticipants());</span>
+<span class="nc" id="L42">        }</span>
+    );
+<span class="nc" id="L44">    return result;</span>
+  }
+
+  /**
+   * Count participants in time box.
+   * @return number of participants.
+   */
+  public Integer countParticipants(){
+<span class="nc" id="L52">    return getParticipants().size();</span>
+  }
+
+  public Long countIssues(){
+<span class="fc" id="L56">    Long result = 0L;</span>
+<span class="fc bfc" id="L57" title="All 2 branches covered.">    for(Sprint sprint: sprints){</span>
+<span class="fc" id="L58">      result += sprint.countIssues();</span>
+<span class="fc" id="L59">    }</span>
+<span class="fc" id="L60">    return result;</span>
+  }
+
+  /**
+   * Filter issues
+   * @param filter
+   * @return filtered issues
+   */
+  public List&lt;Issue&gt; filterIssues(Predicate&lt;Issue&gt; filter){
+<span class="fc" id="L69">    return sprints.stream()</span>
+<span class="fc" id="L70">        .flatMap( sprint -&gt; sprint.getIssues().stream()</span>
+<span class="fc" id="L71">            .filter(filter)</span>
+        )
+<span class="fc" id="L73">        .collect(Collectors.toList());</span>
+  }
+
+  public List&lt;Issue&gt; getIssues(){
+<span class="nc" id="L77">    return this.filterIssues( issue -&gt; true);</span>
+  }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

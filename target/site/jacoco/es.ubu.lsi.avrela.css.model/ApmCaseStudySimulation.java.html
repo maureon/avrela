@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ApmCaseStudySimulation.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">avrela</a> &gt; <a href="index.source.html" class="el_package">es.ubu.lsi.avrela.css.model</a> &gt; <span class="el_source">ApmCaseStudySimulation.java</span></div><h1>ApmCaseStudySimulation.java</h1><pre class="source lang-java linenums">package es.ubu.lsi.avrela.css.model;
+
+import es.ubu.lsi.avrela.apm.model.HistoricalApmData;
+import es.ubu.lsi.avrela.apm.model.Issue;
+import es.ubu.lsi.avrela.apm.model.IssueSimilarity;
+import es.ubu.lsi.avrela.apm.model.IssueSimilarity.Feature;
+import java.util.ArrayList;
+import java.util.EnumMap;
+import java.util.Iterator;
+import java.util.List;
+import lombok.Builder;
+import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
+
+/** Models a case study simulation. */
+@Data
+@Builder
+<span class="fc" id="L18">@Slf4j</span>
+public class ApmCaseStudySimulation {
+
+  private HistoricalApmData caseStudy;
+
+  private HistoricalApmData simulation;
+
+  public List&lt;Issue&gt; filterIssueMatchComparisons() {
+<span class="fc" id="L26">    List&lt;Issue&gt; result = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L27">    List&lt;Issue&gt; caseStudyIssues = caseStudy.filterIssues( issue -&gt; true);</span>
+<span class="fc" id="L28">    List&lt;Issue&gt; simulationIssues = simulation.filterIssues( issue -&gt; true);</span>
+<span class="fc" id="L29">    Iterator&lt;Issue&gt; caseStudyIssuesIterator = caseStudyIssues.iterator();</span>
+<span class="fc" id="L30">    Iterator&lt;Issue&gt; simulationIssuesIterator = simulationIssues.iterator();</span>
+<span class="fc" id="L31">    Issue caseStudyIssue = null;</span>
+<span class="fc" id="L32">    Issue simulationIssue = null;</span>
+<span class="pc bpc" id="L33" title="1 of 4 branches missed.">    while(caseStudyIssuesIterator.hasNext() &amp;&amp; simulationIssuesIterator.hasNext()){</span>
+<span class="fc" id="L34">      caseStudyIssue = caseStudyIssuesIterator.next();</span>
+<span class="fc" id="L35">      simulationIssue = simulationIssuesIterator.next();</span>
+      //TODO compare based on similarity:
+      // - Order
+      // - Title (Jaro–Winkler distance)
+      // - Type
+<span class="pc bpc" id="L40" title="1 of 2 branches missed.">      if (caseStudyIssue.issueDescriptionMatch(simulationIssue)){</span>
+<span class="fc" id="L41">        result.add(caseStudyIssue);</span>
+      }
+    }
+<span class="fc" id="L44">    return result;</span>
+  }
+
+  public List&lt;IssueComparison&gt; compare(EnumMap&lt;Feature, Double&gt; featureWeights, Double similarityThreshold) {
+<span class="nc" id="L48">    log.debug(&quot;Similarity threshold is [{}]&quot;, similarityThreshold);</span>
+<span class="nc" id="L49">    List&lt;IssueComparison&gt; result = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L50">    Iterator&lt;Issue&gt; caseStudyIssues = caseStudy.getIssues().iterator();</span>
+<span class="nc" id="L51">    Iterator&lt;Issue&gt; simulationIssues = simulation.getIssues().iterator();</span>
+<span class="nc" id="L52">    Issue caseStudyIssue = null;</span>
+<span class="nc" id="L53">    Issue simulationIssue = null;</span>
+<span class="nc bnc" id="L54" title="All 4 branches missed.">    while (caseStudyIssues.hasNext() &amp;&amp; simulationIssues.hasNext()) {</span>
+<span class="nc" id="L55">      caseStudyIssue = caseStudyIssues.next();</span>
+<span class="nc" id="L56">      simulationIssue = simulationIssues.next();</span>
+<span class="nc" id="L57">      result.add(</span>
+<span class="nc" id="L58">          IssueComparison.builder()</span>
+<span class="nc" id="L59">              .caseStudy(caseStudyIssue)</span>
+<span class="nc" id="L60">              .simulation(simulationIssue)</span>
+<span class="nc" id="L61">              .similarity(IssueSimilarity.similarityDetailOf(caseStudyIssue, simulationIssue,</span>
+                  featureWeights))
+<span class="nc" id="L63">              .build()</span>
+      );
+    }
+<span class="nc bnc" id="L66" title="All 2 branches missed.">    while (caseStudyIssues.hasNext()) {</span>
+<span class="nc" id="L67">      caseStudyIssue = caseStudyIssues.next();</span>
+<span class="nc" id="L68">      result.add(</span>
+<span class="nc" id="L69">          IssueComparison.builder()</span>
+<span class="nc" id="L70">              .caseStudy(caseStudyIssue)</span>
+<span class="nc" id="L71">              .simulation(Issue.emptyIssue())</span>
+<span class="nc" id="L72">              .similarity(IssueSimilarityResult.emptyResult())</span>
+<span class="nc" id="L73">              .build()</span>
+      );
+    }
+<span class="nc bnc" id="L76" title="All 2 branches missed.">    while (simulationIssues.hasNext()) {</span>
+<span class="nc" id="L77">      simulationIssue = simulationIssues.next();</span>
+<span class="nc" id="L78">      result.add(</span>
+<span class="nc" id="L79">          IssueComparison.builder()</span>
+<span class="nc" id="L80">              .caseStudy(Issue.emptyIssue())</span>
+<span class="nc" id="L81">              .simulation(simulationIssue)</span>
+<span class="nc" id="L82">              .similarity(IssueSimilarityResult.emptyResult())</span>
+<span class="nc" id="L83">              .build()</span>
+      );
+    }
+<span class="nc" id="L86">    return result;</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

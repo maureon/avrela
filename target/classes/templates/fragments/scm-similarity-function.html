@@ -1,0 +1,31 @@
+<div><!-- Issue similarity function  -->
+  <div class="row mb-4 gx-5">
+    <div class="col"><h5>Commit similarity function settings </h5></div>
+    <div class="col"></div>
+  </div>
+  <div class="row mb-4 gx-5"><!-- Similarity labels, state, issue name -->
+    <div class="col">
+      <label for="labelFilesWeight" class="form-label"><a href="#" data-bs-toggle="tooltip" data-bs-title="Files similarity takes into account commit affected files full path using Jaccard index">Files similarity weight</a></label>
+      <input id="labelFilesWeight" min="0.01" max="1" step="0.01" type="number" class="form-control" th:field="*{commitSimilarityFunctionConfig.filesWeight}" />
+    </div>
+    <div class="col">
+      <label for="messageSimilarityWeight" class="form-label"><a href="#" data-bs-toggle="tooltip" data-bs-title="Commit message similarity use Jaro-Winckler similarity">Message similarity weight</a></label>
+      <input id="messageSimilarityWeight" min="0.01" max="1" step="0.01" type="number" class="form-control" th:field="*{commitSimilarityFunctionConfig.messageWeight}" />
+    </div>
+    <div class="col"></div>
+    <div class="col"></div>
+  </div>
+  <span class="separator"></span>
+  <div><!-- Similarity threshold  -->
+    <div class="row mb-4 gx-5"><!-- Similarity threshold -->
+      <div class="col">
+        <label for="similarityThreshold" class="form-label"><a href="#" data-bs-toggle="tooltip" data-bs-title="Minimal overall similarity value to consider two commits as equal">Similarity threshold</a></label>
+        <input id="similarityThreshold" min="0.01" max="1" step="0.01" type="number" class="form-control" th:field="*{similarityThreshold}" />
+      </div>
+      <div class="col">
+      </div>
+      <div class="col"></div>
+      <div class="col"></div>
+    </div>
+  </div>
+</div>

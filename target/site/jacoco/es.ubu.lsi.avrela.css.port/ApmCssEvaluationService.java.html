@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ApmCssEvaluationService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">avrela</a> &gt; <a href="index.source.html" class="el_package">es.ubu.lsi.avrela.css.port</a> &gt; <span class="el_source">ApmCssEvaluationService.java</span></div><h1>ApmCssEvaluationService.java</h1><pre class="source lang-java linenums">package es.ubu.lsi.avrela.css.port;
+
+import es.ubu.lsi.avrela.apm.adapter.github.GitHubApmClient;
+import es.ubu.lsi.avrela.apm.adapter.github.GitHubHistoricalApmDataRepository;
+import es.ubu.lsi.avrela.apm.adapter.github.GitHubSprintRepository;
+import es.ubu.lsi.avrela.apm.adapter.github.mapper.GitHubMilestoneMapper;
+import es.ubu.lsi.avrela.apm.adapter.web.WebHistoricalApmData;
+import es.ubu.lsi.avrela.apm.adapter.web.mapper.WebHistoricalApmDataMapper;
+import es.ubu.lsi.avrela.apm.model.HistoricalApmData;
+import es.ubu.lsi.avrela.apm.model.IssueSimilarity;
+import es.ubu.lsi.avrela.apm.model.IssueSimilarity.Feature;
+import es.ubu.lsi.avrela.css.adapter.web.WebApmCaseStudySimulation;
+import es.ubu.lsi.avrela.css.adapter.web.WebRubricCriteriaEvaluation;
+import es.ubu.lsi.avrela.css.adapter.web.WebRubricEvaluation;
+import es.ubu.lsi.avrela.css.model.ApmCaseStudySimulation;
+import es.ubu.lsi.avrela.css.model.ApmCriteriaScalesConfig;
+import es.ubu.lsi.avrela.css.model.IssueComparison;
+import es.ubu.lsi.avrela.css.model.Rubric;
+import es.ubu.lsi.avrela.css.util.ApmCssDataGenerator;
+import es.ubu.lsi.avrela.css.util.RubricDataGenerator;
+import feign.Logger.Level;
+import java.util.EnumMap;
+import java.util.List;
+import lombok.extern.slf4j.Slf4j;
+
+<span class="nc" id="L26">@Slf4j</span>
+<span class="nc" id="L27">public class ApmCssEvaluationService {</span>
+
+<span class="nc" id="L29">  private ApmCriteriaService criteriaService = new ApmCriteriaService();</span>
+
+<span class="nc" id="L31">  private WebHistoricalApmDataMapper webHistoricalApmDataMapper = new WebHistoricalApmDataMapper();</span>
+
+  public WebApmCaseStudySimulation evaluate (WebApmCaseStudySimulation apmCss){
+    //Init services
+<span class="nc" id="L35">    GitHubApmClient gitHubApmClient = GitHubApmClient.with(Level.BASIC);</span>
+<span class="nc" id="L36">    GitHubMilestoneMapper milestoneMapper = GitHubMilestoneMapper.build();</span>
+<span class="nc" id="L37">    GitHubSprintRepository sprintFinder = new GitHubSprintRepository(gitHubApmClient, milestoneMapper);</span>
+<span class="nc" id="L38">    GitHubHistoricalApmDataRepository apmDataRepository = new GitHubHistoricalApmDataRepository(sprintFinder);</span>
+    //Get case study commits
+<span class="nc" id="L40">    WebHistoricalApmData caseStudyRequest = apmCss.getCaseStudy();</span>
+<span class="nc" id="L41">    HistoricalApmData caseStudy =</span>
+<span class="nc" id="L42">        apmDataRepository.findByRepoOwnerAndRepoNameAndSprintDueBetween(</span>
+<span class="nc" id="L43">            caseStudyRequest.getRepoOwner(),</span>
+<span class="nc" id="L44">            caseStudyRequest.getRepoName(),</span>
+<span class="nc" id="L45">            caseStudyRequest.getStartAt(),</span>
+<span class="nc" id="L46">            caseStudyRequest.getEndAt());</span>
+<span class="nc" id="L47">    caseStudy.setStartAt(caseStudyRequest.getStartAt());</span>
+<span class="nc" id="L48">    caseStudy.setEndAt(caseStudyRequest.getEndAt());</span>
+
+    //Get simulation commits
+<span class="nc" id="L51">    WebHistoricalApmData simulationRequest = apmCss.getSimulation();</span>
+<span class="nc" id="L52">    HistoricalApmData simulation =</span>
+<span class="nc" id="L53">        apmDataRepository.findByRepoOwnerAndRepoNameAndSprintDueBetween(</span>
+<span class="nc" id="L54">            simulationRequest.getRepoOwner(),</span>
+<span class="nc" id="L55">            simulationRequest.getRepoName(),</span>
+<span class="nc" id="L56">            simulationRequest.getStartAt(),</span>
+<span class="nc" id="L57">            simulationRequest.getEndAt());</span>
+<span class="nc" id="L58">    simulation.setStartAt(simulationRequest.getStartAt());</span>
+<span class="nc" id="L59">    simulation.setEndAt(simulationRequest.getEndAt());</span>
+
+    //Features-weight mapping
+<span class="nc" id="L62">    EnumMap&lt;IssueSimilarity.Feature, Double&gt; featureWeights = new EnumMap&lt;&gt;(IssueSimilarity.Feature.class);</span>
+<span class="nc" id="L63">    log.debug(&quot;labels {}  states {} name {} &quot;,</span>
+<span class="nc" id="L64">        apmCss.getIssueSimilarityFunctionConfig().getLabelWeight(),</span>
+<span class="nc" id="L65">        apmCss.getIssueSimilarityFunctionConfig().getStateWeight(),</span>
+<span class="nc" id="L66">        apmCss.getIssueSimilarityFunctionConfig().getIssueNameWeight());</span>
+
+<span class="nc" id="L68">    featureWeights.put(IssueSimilarity.Feature.LABELS,  apmCss.getIssueSimilarityFunctionConfig()</span>
+<span class="nc" id="L69">        .getLabelWeight());</span>
+<span class="nc" id="L70">    featureWeights.put(Feature.STATE, apmCss.getIssueSimilarityFunctionConfig()</span>
+<span class="nc" id="L71">        .getStateWeight());</span>
+<span class="nc" id="L72">    featureWeights.put(Feature.ISSUE_NAME, apmCss.getIssueSimilarityFunctionConfig()</span>
+<span class="nc" id="L73">        .getIssueNameWeight());</span>
+
+    //calculations
+<span class="nc" id="L76">    ApmCriteriaScalesConfig apmScales = RubricDataGenerator.apmCriteria();</span>
+    //teamwork
+<span class="nc" id="L78">    Double teamWorkValue = criteriaService.getTeamWorkValue(simulation, apmCss.getParticipants());</span>
+<span class="nc" id="L79">    Integer teamWorkMark = Rubric.evaluateCriteria(apmScales.getTeamWorkCriteriaScale() ,teamWorkValue);</span>
+    // ttl - description
+<span class="nc" id="L81">    Double ttlDescriptionValue = criteriaService.getTtlDescriptionValue(</span>
+<span class="nc" id="L82">        ApmCaseStudySimulation.builder()</span>
+<span class="nc" id="L83">            .caseStudy(caseStudy)</span>
+<span class="nc" id="L84">            .simulation(simulation)</span>
+<span class="nc" id="L85">            .build()</span>
+
+    );
+<span class="nc" id="L88">    Integer ttlDescriptionMark = Rubric.evaluateCriteria(apmScales.getToolLearningDescriptionCriteriaScale() ,ttlDescriptionValue);</span>
+<span class="nc" id="L89">    WebRubricEvaluation webRubricEvaluation = WebRubricEvaluation.builder()</span>
+<span class="nc" id="L90">        .teamWork(</span>
+            new WebRubricCriteriaEvaluation(teamWorkValue , teamWorkMark )
+        )
+<span class="nc" id="L93">        .ttlDescription(</span>
+            new WebRubricCriteriaEvaluation(ttlDescriptionValue , ttlDescriptionMark )
+        )
+<span class="nc" id="L96">        .ttlOrganization(ApmCssDataGenerator.getWebRubricEvaluation().getTtlOrganization()) // TODO: calculate &amp; replace</span>
+<span class="nc" id="L97">        .build();</span>
+
+<span class="nc" id="L99">    List&lt;IssueComparison&gt; issueComparisons = ApmCaseStudySimulation.builder().caseStudy(caseStudy).simulation(simulation).build().compare(featureWeights, apmCss.getSimilarityThreshold());</span>
+
+    //Results
+<span class="nc" id="L102">    WebApmCaseStudySimulation result = WebApmCaseStudySimulation.builder()</span>
+<span class="nc" id="L103">        .caseStudy(webHistoricalApmDataMapper.toDto(caseStudy))</span>
+<span class="nc" id="L104">        .simulation(webHistoricalApmDataMapper.toDto(simulation))</span>
+<span class="nc" id="L105">        .rubricEvaluation(webRubricEvaluation)</span>
+<span class="nc" id="L106">        .similarityThreshold(apmCss.getSimilarityThreshold())</span>
+<span class="nc" id="L107">        .issueSimilarityFunctionConfig(apmCss.getIssueSimilarityFunctionConfig())</span>
+<span class="nc" id="L108">        .participants(apmCss.getParticipants())</span>
+<span class="nc" id="L109">        .issueComparisons(issueComparisons)</span>
+<span class="nc" id="L110">        .build();</span>
+
+<span class="nc" id="L112">    return result;</span>
+  }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

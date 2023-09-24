@@ -1,0 +1,34 @@
+<div th:fragment="commit (commit, owner, repository)" class="card">
+  <div class="card-header">
+    <a th:href="'https://github.com/' + ${owner} + '/' + ${repository} + '/commit/' + ${commit?.sha}" target=”_blank”><span th:text="${commit?.sha}"></span></a>
+  </div>
+  <ul class="list-group list-group-flush">
+    <li class="list-group-item">Date
+      <span class="badge bg-secondary">
+        <small th:text="${commit?.date}"></small>
+      </span>
+    </li>
+    <li class="list-group-item">Author
+      <span class="badge bg-secondary">
+        <small th:text="${commit?.author}"></small>
+      </span>
+    </li>
+    <li class="list-group-item">Message
+      <span class="badge bg-secondary">
+        <small th:text="${commit?.message}"></small>
+      </span>
+    </li>
+    <li class="list-group-item">Commit files
+      <div th:each="file : ${commit?.files}">
+           <span class="badge bg-secondary">
+             <small th:text="${file.name}"></small>&nbsp;
+          </span>
+      </div>
+    </li>
+    <li class="list-group-item">Associated issues
+      <div th:each="issue : ${commit?.associatedIssues}">
+             <a th:href="'https://github.com/' + ${owner} + '/' + ${repository} + '/issues/' + ${issue}" target=”_blank”><span th:text="${issue}"></span></a>&nbsp;&nbsp;
+      </div>
+    </li>
+  </ul>
+</div>

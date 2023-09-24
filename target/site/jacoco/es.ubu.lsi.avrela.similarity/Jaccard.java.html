@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Jaccard.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">avrela</a> &gt; <a href="index.source.html" class="el_package">es.ubu.lsi.avrela.similarity</a> &gt; <span class="el_source">Jaccard.java</span></div><h1>Jaccard.java</h1><pre class="source lang-java linenums">package es.ubu.lsi.avrela.similarity;
+
+import java.util.HashSet;
+import java.util.Set;
+
+<span class="nc" id="L6">public class Jaccard {</span>
+
+  /**
+   * The Jaccard similarity measures the similarity between two sets of data.
+   *
+   * @param a first set of data
+   * @param b second set of data
+   * @return jaccard similarity.
+   */
+  public static double similarityOf(Set&lt;Object&gt; a, Set&lt;Object&gt; b) {
+<span class="pc bpc" id="L16" title="2 of 4 branches missed.">    if (a == null || b == null) {</span>
+<span class="nc" id="L17">      return 0.0;</span>
+    }
+    double result;
+<span class="fc" id="L20">    Set&lt;Object&gt; intersection = new HashSet&lt;&gt;(a);</span>
+<span class="fc" id="L21">    intersection.retainAll(b);</span>
+<span class="fc" id="L22">    int intersectionSize = intersection.size();</span>
+<span class="fc" id="L23">    Set&lt;Object&gt; union = new HashSet&lt;&gt;(a);</span>
+<span class="fc" id="L24">    union.addAll(b);</span>
+<span class="fc" id="L25">    int unionSize = union.size();</span>
+<span class="fc" id="L26">    result = (double) intersectionSize / unionSize;</span>
+<span class="fc" id="L27">    return (result);</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

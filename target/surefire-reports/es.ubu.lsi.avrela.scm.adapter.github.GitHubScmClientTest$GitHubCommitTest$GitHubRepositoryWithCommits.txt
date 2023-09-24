@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: es.ubu.lsi.avrela.scm.adapter.github.GitHubScmClientTest$GitHubCommitTest$GitHubRepositoryWithCommits
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.504 s - in es.ubu.lsi.avrela.scm.adapter.github.GitHubScmClientTest$GitHubCommitTest$GitHubRepositoryWithCommits

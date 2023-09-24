@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: es.ubu.lsi.avrela.apm.adapter.github.mapper.GitHubIssueMapperTest$NoneNullGitHubIssue$MapNoneNullGitHubIssue
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.035 s - in es.ubu.lsi.avrela.apm.adapter.github.mapper.GitHubIssueMapperTest$NoneNullGitHubIssue$MapNoneNullGitHubIssue

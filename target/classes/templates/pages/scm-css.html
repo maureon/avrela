@@ -1,0 +1,87 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8"/>
+  <title>AVRELA - Automated virtual repository lab assesment </title>
+  <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.3/css/bootstrap.min.css}"/>
+  <script th:src="@{/webjars/bootstrap/5.2.3/js/bootstrap.bundle.min.js}"></script>
+</head>
+<body>
+<style>
+  span.separator {
+    border-top: 0px solid #333;
+    width: 100%;
+    height: 30px;
+    display: block;
+  }
+</style>
+
+<nav class="navbar bg-secondary">
+  <div class="container-fluid p-5 text-lg-start ">
+    <a class="navbar-brand" href="#">
+      <img src="check-logo.svg" alt="Avrela logo" width="50" height="50">
+      Automated Virtual REpository Lab Assesment
+    </a>
+    <a class="navbar-brand" href="#">
+      <img src="ubu.png" alt="Ubu logo" width="156" height="59">
+    </a>
+  </div>
+</nav>
+
+<span th:if="${exception != null}">
+ <div th:replace="fragments/error.html"></div>
+</span>
+
+<div class="container-fluid p-5 text-lg-start">
+
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="/">Home</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Source control management case study simulation evaluation</li>
+  </ol>
+</nav>
+
+<form th:action="@{/scm-css}" th:object="${webScmCaseStudySimulation}" method="post">
+  <div th:replace="fragments/scm-css-sim.html"><!-- Case study, simulation input parameters  -->
+  </div>
+  <span class="separator"></span>
+  <div class="row mb-4 gx-5"><!-- Number of Participants  -->
+    <div class="col">
+      <label for="participants" class="mr-sm-2"><a href="#" data-bs-toggle="tooltip" data-bs-title="Number of participants">Simulation participants</a></label>
+      <select id="participants" name="participants" th:field="*{participants}" class="form-select">
+        <option th:each="i : ${#numbers.sequence(1, 4)}" th:value="${i}" th:text="${i}"
+                th:selected="${i} == ${webScmCaseStudySimulation.participants}"></option>
+      </select>
+    </div>
+    <div class="col"></div>
+    <div class="col"></div>
+    <div class="col"></div>
+  </div>
+  <span class="separator"></span>
+  <div th:replace="fragments/scm-similarity-function.html"><!-- Issue similarity function  -->
+  </div>
+  <span class="separator"></span>
+  <div class="row mb-4 gx-5"><!-- Case study simulation  -->
+    <div class="col">
+      <button type="submit" class="btn btn-dark btn-lg">Submit</button>
+    </div>
+    <div class="col"></div>
+    <div class="col"></div>
+  </div>
+  <span class="separator"></span>
+</form>
+
+<span class="separator"/>
+
+<span th:if="${webScmCaseStudySimulation.rubricEvaluation != null}">
+ <div th:replace="fragments/scm-css-eval-results.html"></div>
+</span>
+
+</div>
+</body>
+<script>
+  const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+  const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
+</script>
+
+</html>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RubricDataGenerator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">avrela</a> &gt; <a href="index.source.html" class="el_package">es.ubu.lsi.avrela.css.util</a> &gt; <span class="el_source">RubricDataGenerator.java</span></div><h1>RubricDataGenerator.java</h1><pre class="source lang-java linenums">package es.ubu.lsi.avrela.css.util;
+
+import es.ubu.lsi.avrela.css.model.ApmCriteriaScalesConfig;
+import es.ubu.lsi.avrela.css.model.Rubric;
+import es.ubu.lsi.avrela.css.model.ScmCriteriaScalesConfig;
+import java.util.HashMap;
+import java.util.Map;
+
+<span class="nc" id="L9">public class RubricDataGenerator {</span>
+
+  public static ApmCriteriaScalesConfig apmCriteria(){
+    // teamwork criteria
+<span class="nc" id="L13">    Map&lt;String, String&gt; teamWorkCriteriaDefinition = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L14">    teamWorkCriteriaDefinition.put(&quot;0&quot;, &quot;50&quot;);</span>
+<span class="nc" id="L15">    teamWorkCriteriaDefinition.put(&quot;1&quot;, &quot;None&quot;);</span>
+<span class="nc" id="L16">    teamWorkCriteriaDefinition.put(&quot;2&quot;, &quot;100&quot;);</span>
+    // Task management tool - description
+<span class="nc" id="L18">    Map&lt;String, String&gt; ttlDescriptionCriteriaDefinition = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L19">    ttlDescriptionCriteriaDefinition.put(&quot;0&quot;, &quot;0&quot;);</span>
+<span class="nc" id="L20">    ttlDescriptionCriteriaDefinition.put(&quot;1&quot;, &quot;100&quot;);</span>
+<span class="nc" id="L21">    ttlDescriptionCriteriaDefinition.put(&quot;2&quot;, &quot;None&quot;);</span>
+    // Task management tool - organization
+<span class="nc" id="L23">    Map&lt;String, String&gt; ttlOrganizationCriteriaDefinition = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L24">    ttlOrganizationCriteriaDefinition.put(&quot;0&quot;, &quot;0&quot;);</span>
+<span class="nc" id="L25">    ttlOrganizationCriteriaDefinition.put(&quot;1&quot;, &quot;100&quot;);</span>
+<span class="nc" id="L26">    ttlOrganizationCriteriaDefinition.put(&quot;2&quot;, &quot;None&quot;);</span>
+
+<span class="nc" id="L28">    ApmCriteriaScalesConfig result = new ApmCriteriaScalesConfig();</span>
+<span class="nc" id="L29">    result.setTeamWorkCriteriaScale(Rubric.toCriteriaScale(teamWorkCriteriaDefinition));</span>
+<span class="nc" id="L30">    result.setToolLearningDescriptionCriteriaScale(Rubric.toCriteriaScale(ttlDescriptionCriteriaDefinition));</span>
+    //TODO: task management tool - organization
+
+<span class="nc" id="L33">    return result;</span>
+  }
+
+  public static ScmCriteriaScalesConfig scmCriteria(){
+    // teamwork criteria
+<span class="nc" id="L38">    Map&lt;String, String&gt; scmTeamWorkCriteriaDefinition = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L39">    scmTeamWorkCriteriaDefinition.put(&quot;0&quot;, &quot;0&quot;);</span>
+<span class="nc" id="L40">    scmTeamWorkCriteriaDefinition.put(&quot;1&quot;, &quot;50&quot;);</span>
+<span class="nc" id="L41">    scmTeamWorkCriteriaDefinition.put(&quot;2&quot;, &quot;100&quot;);</span>
+    // Task management tool - description
+<span class="nc" id="L43">    Map&lt;String, String&gt; commitSimilarityCriteriaDefinition = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L44">    commitSimilarityCriteriaDefinition.put(&quot;0&quot;, &quot;None&quot;);</span>
+<span class="nc" id="L45">    commitSimilarityCriteriaDefinition.put(&quot;1&quot;, &quot;75&quot;);</span>
+<span class="nc" id="L46">    commitSimilarityCriteriaDefinition.put(&quot;2&quot;, &quot;100&quot;);</span>
+    // Task management tool - organization
+<span class="nc" id="L48">    Map&lt;String, String&gt; apmIssueTraceabilityCriteriaDefinition = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L49">    apmIssueTraceabilityCriteriaDefinition.put(&quot;0&quot;, &quot;None&quot;);</span>
+<span class="nc" id="L50">    apmIssueTraceabilityCriteriaDefinition.put(&quot;1&quot;, &quot;None&quot;);</span>
+<span class="nc" id="L51">    apmIssueTraceabilityCriteriaDefinition.put(&quot;2&quot;, &quot;50&quot;);</span>
+
+<span class="nc" id="L53">    ScmCriteriaScalesConfig result = new ScmCriteriaScalesConfig();</span>
+<span class="nc" id="L54">    result.setTeamWorkCriteriaScale(Rubric.toCriteriaScale(scmTeamWorkCriteriaDefinition));</span>
+<span class="nc" id="L55">    result.setCommitSimilarityCriteriaScale(Rubric.toCriteriaScale(commitSimilarityCriteriaDefinition));</span>
+<span class="nc" id="L56">    result.setApmIssueTraceabilityCriteriaScale(Rubric.toCriteriaScale(apmIssueTraceabilityCriteriaDefinition));</span>
+
+<span class="nc" id="L58">    return result;</span>
+  }
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

@@ -1,0 +1,117 @@
+<div><!-- Evaluation results -->
+  <div class="row"><!-- SCM Case study simulation  -->
+    <div class="col"><h5>Evaluation result : <mark><strong th:text="${webScmCaseStudySimulation?.rubricEvaluation?.getMark()}"></strong></mark> out of 6</h5>
+    </div>
+    <div class="col">
+    </div>
+  </div>
+  <div class="table-responsive">
+    <table class="table text-center">
+      <thead>
+      <tr>
+        <th style="width: 34%;"></th>
+        <th style="width: 22%;">0</th>
+        <th style="width: 22%;">1</th>
+        <th style="width: 22%;">2</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <th scope="row"><a href="#" data-bs-toggle="tooltip" data-bs-title="Evaluates that the commits of the simulation are carried out alternately between the members of the team.">Teamwork</a></th>
+        <div th:switch="${webScmCaseStudySimulation?.rubricEvaluation?.teamWork?.mark}">
+          <td class="table-success" th:case="0"><strong th:text="${webScmCaseStudySimulation?.rubricEvaluation?.teamWork?.value}"/> [0,50)</td>
+          <td th:case="*">[0,50)</td>
+        </div>
+        <div th:switch="${webScmCaseStudySimulation?.rubricEvaluation?.teamWork?.mark}">
+          <td class="table-success" th:case="1"><strong th:text="${webScmCaseStudySimulation?.rubricEvaluation?.teamWork?.value}"/> -</td>
+          <td th:case="*">-</td>
+        </div>
+        <div th:switch="${webScmCaseStudySimulation?.rubricEvaluation?.teamWork?.mark}">
+          <td class="table-success" th:case="2"><strong th:text="${webScmCaseStudySimulation?.rubricEvaluation?.teamWork?.value}"/> [100,100]</td>
+          <td th:case="*">[100,100]</td>
+        </div>
+      </tr>
+      <tr>
+        <th scope="row"><a href="#" data-bs-toggle="tooltip" data-bs-title="Evaluates the percentage of commits in the simulation that are similar to the commits in the case study.">Similarity</a></th>
+        <div th:switch="${webScmCaseStudySimulation?.rubricEvaluation?.similarity?.mark}">
+          <td class="table-success" th:case="0"><strong th:text="${webScmCaseStudySimulation.rubricEvaluation?.similarity?.value}"/> [0,100)</td>
+          <td th:case="*">-</td>
+        </div>
+        <div th:switch="${webScmCaseStudySimulation?.rubricEvaluation?.similarity?.mark}">
+          <td class="table-success" th:case="1"><strong th:text="${webScmCaseStudySimulation?.rubricEvaluation?.similarity?.value}"/> [100,100]</td>
+          <td th:case="*">[75,100)</td>
+        </div>
+        <div th:switch="${webScmCaseStudySimulation?.rubricEvaluation?.similarity?.mark}">
+          <td class="table-success" th:case="2"><strong th:text="${webScmCaseStudySimulation?.rubricEvaluation?.similarity?.value}"/>-</td>
+          <td th:case="*">[100,100]</td>
+        </div>
+      </tr>
+      <tr>
+        <th scope="row"><a href="#" data-bs-toggle="tooltip" data-bs-title="The percentage of simulation commits that have a task established in the agile project management tool is valued.">APM Issue Traceability</a></th>
+        <div th:switch="${webScmCaseStudySimulation?.rubricEvaluation?.issueTraceability?.mark}">
+          <td class="table-success" th:case="0"><strong th:text="${webScmCaseStudySimulation?.rubricEvaluation?.issueTraceability?.value}"/>-</td>
+          <td th:case="*">-</td>
+        </div>
+        <div th:switch="${webScmCaseStudySimulation?.rubricEvaluation?.issueTraceability?.mark}">
+          <td class="table-success" th:case="1"><strong th:text="${webScmCaseStudySimulation?.rubricEvaluation?.issueTraceability?.value}"/>-</td>
+          <td th:case="*">-</td>
+        </div>
+        <div th:switch="${webScmCaseStudySimulation?.rubricEvaluation?.issueTraceability?.mark}">
+          <td class="table-success" th:case="2"><strong th:text="${webScmCaseStudySimulation?.rubricEvaluation?.issueTraceability?.value}"/>[50,100)</td>
+          <td th:case="*">[50,100]</td>
+        </div>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <span class="separator"/>
+
+  <div class="row mb-4 gx-5" ><!-- SCM Case study simulation  -->
+    <div class="col"><h5>Commit comparison</h5>
+    </div>
+    <div class="col">
+    </div>
+  </div>
+
+  <span class="separator"/>
+
+  <span class="separator"/>
+
+  <div class="row mb-4 gx-5"><!-- Row header  -->
+    <div class="col"><h6>Original commit</h6></div>
+    <div class="col"><h6>Similarity feedback</h6></div>
+    <div class="col"><h6>Simulation commit</h6></div>
+  </div> <!-- row -->
+
+  <!-- commit details goes here -->
+  <div th:each="commitComparison, commitStatus : ${webScmCaseStudySimulation?.commitComparisons}" class="row"><!-- APM Case study simulation  -->
+    <div class="col">
+      <div th:replace="fragments/commit.html :: commit(commit=${commitComparison.caseStudy}, owner=${webScmCaseStudySimulation.caseStudy.repoOwner}, repository=${webScmCaseStudySimulation.caseStudy.repoName})">
+      </div>
+    </div>
+    <div class="col">
+      <div class="card">
+        <div class="card-header">
+          <strong th:text="${commitComparison?.similarity?.result}"></strong>
+        </div>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">Message similarity
+            <span class="badge bg-secondary">
+        <small th:text="${commitComparison?.similarity?.messageSimilarity}"></small>
+          </span>
+          </li>
+          <li class="list-group-item">Commit files similarity
+            <span class="badge bg-secondary">
+        <small th:text="${commitComparison?.similarity?.commitFilesSimilarity}"></small>
+          </span>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="col">
+        <div th:replace="fragments/commit.html :: commit(commit=${commitComparison?.simulation}, owner=${webScmCaseStudySimulation.simulation.repoOwner}, repository=${webScmCaseStudySimulation.simulation.repoName})">
+        </div>
+    </div>
+  </div> <!-- row -->
+</div><!-- Evaluation results -->

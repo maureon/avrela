@@ -1,0 +1,121 @@
+<div><!-- Evaluation results -->
+  <div class="row"><!-- APM Case study simulation  -->
+    <div class="col"><h5>Evaluation result : <mark><strong th:text="${webApmCaseStudySimulation?.rubricEvaluation?.getMark()}"></strong></mark> out of 4</h5>
+    </div>
+    <div class="col">
+    </div>
+  </div>
+  <div class="table-responsive">
+    <table class="table text-center">
+      <thead>
+      <tr>
+        <th style="width: 34%;"></th>
+        <th style="width: 22%;">0</th>
+        <th style="width: 22%;">1</th>
+        <th style="width: 22%;">2</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <th scope="row"><a href="#" data-bs-toggle="tooltip" data-bs-title="It is based on the average percentage of participation of the group of students in the tasks">Teamwork</a></th>
+        <div th:switch="${webApmCaseStudySimulation?.rubricEvaluation?.teamWork?.mark}">
+          <td class="table-success" th:case="0"><strong th:text="${webApmCaseStudySimulation?.rubricEvaluation?.teamWork?.value}"/> [0,50)</td>
+          <td th:case="*">[0,50)</td>
+        </div>
+        <div th:switch="${webApmCaseStudySimulation?.rubricEvaluation?.teamWork?.mark}">
+          <td class="table-success" th:case="1"><strong th:text="${webApmCaseStudySimulation?.rubricEvaluation?.teamWork?.value}"/> -</td>
+          <td th:case="*">-</td>
+        </div>
+        <div th:switch="${webApmCaseStudySimulation?.rubricEvaluation?.teamWork?.mark}">
+          <td class="table-success" th:case="2"><strong th:text="${webApmCaseStudySimulation?.rubricEvaluation?.teamWork?.value}"/> [100,100]</td>
+          <td th:case="*">[100,100]</td>
+        </div>
+      </tr>
+      <tr>
+        <th scope="row"><a href="#" data-bs-toggle="tooltip" data-bs-title="Evaluates the fidelity of the simulation issue description compared to the equivalent task in the case study">TaskManagement tool learning  - Description</a></th>
+        <div th:switch="${webApmCaseStudySimulation?.rubricEvaluation?.ttlDescription?.mark}">
+          <td class="table-success" th:case="0"><strong th:text="${webApmCaseStudySimulation.rubricEvaluation?.ttlDescription?.value}"/> [0,100)</td>
+          <td th:case="*">[0,100)</td>
+        </div>
+        <div th:switch="${webApmCaseStudySimulation?.rubricEvaluation?.ttlDescription?.mark}">
+          <td class="table-success" th:case="1"><strong th:text="${webApmCaseStudySimulation?.rubricEvaluation?.ttlDescription?.value}"/> [100,100]</td>
+          <td th:case="*">[100,100]</td>
+        </div>
+        <div th:switch="${webApmCaseStudySimulation?.rubricEvaluation?.ttlDescription?.mark}">
+          <td class="table-success" th:case="2"><strong th:text="${webApmCaseStudySimulation?.rubricEvaluation?.ttlDescription?.value}"/> -</td>
+          <td th:case="*">-</td>
+        </div>
+      </tr>
+      <tr>
+        <th scope="row"><a href="#" data-bs-toggle="tooltip" data-bs-title="Evaluates the fidelity of the simulation issue labels and sprint assignation compared to the equivalent task in the case study">Task management toolLearning  - Organization</a></th>
+        <div th:switch="${webApmCaseStudySimulation?.rubricEvaluation?.ttlOrganization?.mark}">
+          <td class="table-success" th:case="0"><strong th:text="${webApmCaseStudySimulation?.rubricEvaluation?.ttlOrganization?.value}"/> [0,100)</td>
+          <td th:case="*">[0,100)</td>
+        </div>
+        <div th:switch="${webApmCaseStudySimulation?.rubricEvaluation?.ttlOrganization?.mark}">
+          <td class="table-success" th:case="1"><strong th:text="${webApmCaseStudySimulation?.rubricEvaluation?.ttlOrganization?.value}"/> [100,100]</td>
+          <td th:case="*">[100,100]</td>
+        </div>
+        <div th:switch="${webApmCaseStudySimulation?.rubricEvaluation?.ttlOrganization?.mark}">
+          <td class="table-success" th:case="2"><strong th:text="${webApmCaseStudySimulation?.rubricEvaluation?.ttlOrganization?.value}"/> -</td>
+          <td th:case="*">-</td>
+        </div>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <span class="separator"/>
+
+  <div class="row mb-4 gx-5" ><!-- APM Case study simulation  -->
+    <div class="col"><h5>Issue comparison</h5>
+    </div>
+    <div class="col">
+    </div>
+  </div>
+
+  <span class="separator"/>
+
+  <span class="separator"/>
+
+  <div class="row mb-4 gx-5"><!-- Row header  -->
+    <div class="col"><h6>Original issue</h6></div>
+    <div class="col"><h6>Similarity feedback</h6></div>
+    <div class="col"><h6>Simulation issue</h6></div>
+  </div> <!-- row -->
+
+  <div th:each="issueComparison, issueStatus : ${webApmCaseStudySimulation?.issueComparisons}" class="row"><!-- APM Case study simulation  -->
+    <div class="col">
+      <div th:replace="fragments/issue.html :: issue(issue=${issueComparison.caseStudy}, owner=${webApmCaseStudySimulation.caseStudy.repoOwner}, repository=${webApmCaseStudySimulation.caseStudy.repoName})">
+      </div>
+    </div>
+    <div class="col">
+      <div class="card">
+        <div class="card-header">
+          <strong th:text="${issueComparison?.similarity?.result}"></strong>
+        </div>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">Labels similarity
+            <span class="badge bg-secondary">
+        <small th:text="${issueComparison?.similarity?.labelFilesSimilarity}"></small>
+          </span>
+          </li>
+          <li class="list-group-item">State similarity
+            <span class="badge bg-secondary">
+        <small th:text="${issueComparison?.similarity?.stateSimilarity}"></small>
+          </span>
+          </li>
+          <li class="list-group-item">Name similarity
+            <span class="badge bg-secondary">
+        <small th:text="${issueComparison?.similarity?.nameSimilarity}"></small>
+          </span>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="col">
+      <div th:replace="fragments/issue.html :: issue(issue=${issueComparison.simulation}, owner=${webApmCaseStudySimulation.simulation.repoOwner}, repository=${webApmCaseStudySimulation.simulation.repoName})">
+      </div>
+    </div>
+  </div> <!-- row -->
+</div><!-- Evaluation results -->

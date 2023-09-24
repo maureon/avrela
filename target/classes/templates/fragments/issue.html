@@ -1,0 +1,27 @@
+<div th:fragment="issue (issue, owner, repository)" class="card">
+  <div class="card-header">
+    <a th:href="'https://github.com/' + ${owner} + '/' + ${repository} + '/issues/' + ${issue?.id}" target=”_blank”><span th:text="${issue?.name}"></span></a>
+  </div>
+  <ul class="list-group list-group-flush">
+    <li class="list-group-item">State
+      <span class="badge bg-secondary">
+        <small th:text="${issue?.state}"></small>
+      </span>
+    </li>
+    <li class="list-group-item">Labels
+      <div th:each="label : ${issue?.labels}">
+           <span class="badge bg-secondary">
+             <small th:text="${label}"></small>&nbsp;
+          </span>
+      </div>
+    </li>
+    <li class="list-group-item">
+      <div th:replace="fragments/form-check-disabled.html :: form-check-disabled(value=${issue.hasImages}, id='hasImagesCheck', text='Has image')">
+      </div>
+      <div th:replace="fragments/form-check-disabled.html :: form-check-disabled(value=${issue.hasLink}, id='hasLinkCheck', text='Has link')">
+      </div>
+      <div th:replace="fragments/form-check-disabled.html :: form-check-disabled(value=${issue.hasTaskList}, id='hasTaskListCheck', text='Has task list')">
+      </div>
+    </li>
+  </ul>
+</div>
