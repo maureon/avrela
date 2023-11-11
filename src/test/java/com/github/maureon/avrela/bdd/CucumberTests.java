@@ -14,7 +14,7 @@ import org.junit.platform.suite.api.Suite;
 @Suite
 @IncludeEngines("cucumber")
 @SelectClasspathResource("features")
-@ConfigurationParameter(key = GLUE_PROPERTY_NAME, value = "es.ubu.lsi.avrela.bdd")
+@ConfigurationParameter(key = GLUE_PROPERTY_NAME, value = "com.github.maureon.avrela.bdd")
 @ConfigurationParameter(key= PLUGIN_PUBLISH_ENABLED_PROPERTY_NAME, value = "true")
 @ConfigurationParameter(key = PLUGIN_PROPERTY_NAME, value = "pretty")
 public class CucumberTests {

@@ -1,4 +1,0 @@
--------------------------------------------------------------------------------
-Test set: es.ubu.lsi.avrela.apm.adapter.github.GitHubApmClientTest$GitHubIssuesTest$RepositoryWithIssues
--------------------------------------------------------------------------------
-Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.597 s - in es.ubu.lsi.avrela.apm.adapter.github.GitHubApmClientTest$GitHubIssuesTest$RepositoryWithIssues
